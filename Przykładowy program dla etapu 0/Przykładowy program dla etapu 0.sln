@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Przykładowy program dla etapu 0", "Przykładowy program dla etapu 0\Przykładowy program dla etapu 0.csproj", "{5F8F8CDF-7AA2-4EAD-9EF4-C1DB50BDBD31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test przykładowego programu etapu 0", "Test przykładowego programu etapu 0\Test przykładowego programu etapu 0.csproj", "{6A84D244-AA17-4B74-9F45-9D17A6FAC810}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test przykładowego programu etapu 0", "Test przykładowego programu etapu 0\Test przykładowego programu etapu 0.csproj", "{6A84D244-AA17-4B74-9F45-9D17A6FAC810}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
