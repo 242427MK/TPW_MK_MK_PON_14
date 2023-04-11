@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace Etap1.Presentation.Model
 {
-    class Model
-    {
-    }
+
 }
