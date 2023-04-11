@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Etap1.Data
+namespace Data
 {
     
         public abstract class AbstractDataApi
