@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data
+namespace Etap1.Data
 {
     public class Ball
     {

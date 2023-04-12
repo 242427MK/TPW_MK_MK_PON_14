@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data
+namespace Etap1.Data
 {
-    internal class Scene
+    public class Scene
     {
         private readonly int Width;
 
