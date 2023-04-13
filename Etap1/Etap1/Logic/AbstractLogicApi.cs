@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+using Etap1.Data;
 
 namespace Etap1.Logic
 {
-    public abstract class Logic {
+    public abstract class AbstractLogicApi
+    {
 
         public static AbstractLogicApi CreateApi(AbstractDataApi abstractDataApi = null)
         {
@@ -45,27 +45,23 @@ namespace Etap1.Logic
             {
                 this.scene = new Scene(width, height);
                 scene.GenerateBallList(ballQuantity, ballRadius);
-                foreach (Ball ball in scene.Balls)
+                foreach (Ball ball1 in scene.Balls)
                 {
                     Thread thread = new Thread(() =>
                     {
                         int xDirection;
                         int yDirection;
 
-                        //while (this.scene.Enabled)
                         while (true)
                         {
                             Random rng = new Random();
+
                             xDirection = rng.Next(-20, 20);
                             yDirection = rng.Next(-20, 20);
-                            //while ((orb.X + xDirection - orbRadius) >= 0 && (orb.X + xDirection - orbRadius) <= scene.Width)
-                            //{
-                            orb.X += xDirection;
-                            //}
-                            //while ((orb.Y + yDirection - orbRadius) >= 0 && (orb.Y + yDirection - orbRadius) <= scene.Height)
-                            //{
-                            orb.Y += yDirection;
-                            //}
+
+                            ball1.x += xDirection;
+                            ball1.y += yDirection;
+
                             Thread.Sleep(15);
                         }
                     });
@@ -95,4 +91,4 @@ namespace Etap1.Logic
         }
     }
 }
-}
+

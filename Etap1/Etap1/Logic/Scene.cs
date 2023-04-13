@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Etap1.Logic
 {
@@ -10,7 +8,7 @@ namespace Etap1.Logic
     {
         private readonly int width;
         private readonly int height;
-
+        private bool enabled = false;
 
         public int Width
         {
@@ -27,8 +25,7 @@ namespace Etap1.Logic
             width = Width;
             height = Height;
         }
-
-        private bool enabled = false;
+      
         public bool Enabled
         {
             get { return enabled; }
@@ -41,7 +38,7 @@ namespace Etap1.Logic
             get { return balls; }
         }
 
-        public void GenerateOrbList(int ballQuantity, int ballRadius)
+        public void GenerateBallList(int ballQuantity, int ballRadius)
         {
             balls.Clear();
             Random rng = new Random();

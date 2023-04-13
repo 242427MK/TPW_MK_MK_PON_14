@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +23,7 @@ namespace Etap1.Logic
             set
             {
                 ball.x = value;
+                OnPropertyChanged("x");
             }
         }
         public double y
@@ -29,6 +32,7 @@ namespace Etap1.Logic
             set
             {
                 ball.y = value;
+                OnPropertyChanged("y");
             }
         }
         public double radius
@@ -37,7 +41,33 @@ namespace Etap1.Logic
             set
             {
                 ball.radius = value;
+                OnPropertyChanged("radius");
             }
         }
+
+        private void Update(object source, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "xp")
+            {
+                OnPropertyChanged("x");
+            }
+            else if (e.PropertyName == "y")
+            {
+                OnPropertyChanged("y");
+            }
+            else if (e.PropertyName == "radius")
+            {
+                OnPropertyChanged("radius");
+            }
+
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }
