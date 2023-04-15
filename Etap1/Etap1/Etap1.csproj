@@ -9,8 +9,10 @@
 
   <ItemGroup>
     <Folder Include="Presentation\Model\" />
-    <Folder Include="Presentation\ViewModel\" />
-    <Folder Include="Presentation\View\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
   </ItemGroup>
 
 </Project>

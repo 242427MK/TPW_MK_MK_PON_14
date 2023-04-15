@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Etap1.Tests
+namespace Etap1Tests.Data
 {
-    class Tests
+    internal class BallTests
     {
     }
 }

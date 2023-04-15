@@ -6,8 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Etap1
+namespace Etap1.Presentation.View
 {
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>

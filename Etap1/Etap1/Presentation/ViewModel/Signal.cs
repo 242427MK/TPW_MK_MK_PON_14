@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace ViewModel
+namespace Etap1.Presentation.ViewModel
 {
     internal class Signal : ICommand
     {

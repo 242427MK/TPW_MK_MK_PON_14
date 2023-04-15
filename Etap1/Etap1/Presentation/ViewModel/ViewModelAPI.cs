@@ -8,11 +8,11 @@ using System.Text;
 using System.Windows.Input;
 using Etap1.Presentation.Model;
 
-namespace ViewModel
+namespace Etap1.Presentation.ViewModel
 {
     public class ViewModelApi : INotifyPropertyChanged
     {
-        private AbstractAPIModel modelApi/* = AbstractModelApi.CreateApi()*/;
+        private AbstractModelApi modelApi/* = AbstractModelApi.CreateApi()*/;
         private int ballQuantity = 1;
         public string BallQuantity
         {
@@ -52,13 +52,13 @@ namespace ViewModel
         }
 
         public ViewModelApi() : this(null) { }
-        public ViewModelApi(AbstractAPIModel modelApi = null)
+        public ViewModelApi(AbstractModelApi modelApi = null)
         {
             EnableSignal = new Signal(enable);
             DisableSignal = new Signal(disable);
             if (modelApi == null)
             {
-                this.modelApi = AbstractAPIModel.CreateApi();
+                this.modelApi = AbstractModelApi.CreateApi();
             }
             else
             {
