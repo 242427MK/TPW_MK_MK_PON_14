@@ -15,6 +15,7 @@ namespace Etap1.Logic
         public BallLogic(Ball ball1)
         {
             ball = ball1;
+            ball.PropertyChanged += Update;
         }
 
         public double x

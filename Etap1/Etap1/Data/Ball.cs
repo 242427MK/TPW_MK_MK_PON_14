@@ -87,7 +87,7 @@ namespace Etap1.Data
         {
             this.X += this.speedX;
             this.Y += this.speedY;
-            OnPropertyChanged("Position");
+            OnPropertyChanged("position");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

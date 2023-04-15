@@ -1,74 +1,78 @@
-﻿using Logika;
+﻿
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Etap1.Logic;
 
 namespace Etap1.Presentation.Model
 {
     public class Circle : INotifyPropertyChanged
     {
-        private int x;
-        private int y;
-        private int radius;
-    }
+        private double X;
+        private double Y;
+        private double Radius;
 
-    public Circle(Ball ball)
-    {
-        this.x = ball.X;
-        this.y = ball.Y;
-        this.radius = ball.Radius;
-        ball.PropertyChanged += Update;
-    }
-
-    private void Update(object source, PropertyChangedEventArgs key)
-    {
-        Ball sourceBall = (Ball)source;
-        if (key.PropertyName == "X")
+        public Circle(Ball ball)
         {
-            this.x = sourceBall.X - sourceBall.Radius;
-        }
-        if (key.PropertyName == "Y")
-        {
-            this.y = sourceBall.Y - sourceBall.Radius;
-        }
-        if (key.PropertyName == "Radius")
-        {
-            this.radius = sourceBall.Radius;
+            this.X = ball.x;
+            this.Y = ball.y;
+            this.Radius = ball.radius;
+            ball.PropertyChanged += Update;
         }
 
-         public int X
-    {
-        get { return x; }
-        set
+        private void Update(object source, PropertyChangedEventArgs key)
         {
-            x = value;
-            OnPropertyChanged("X");
+            Ball sourceBall = (Ball)source;
+            if (key.PropertyName == "x")
+            {
+                this.X = sourceBall.x - sourceBall.radius;
+            }
+            if (key.PropertyName == "y")
+            {
+                this.Y = sourceBall.y - sourceBall.radius;
+            }
+            if (key.PropertyName == "radius")
+            {
+                this.Radius = sourceBall.radius;
+            }
+        }
+
+         public double x
+        {
+            get { return X; }
+            set
+            {
+                X = value;
+                OnPropertyChanged("x");
+            }
+        }
+
+        public double y
+        {
+            get { return Y; }
+            set
+            {
+                Y = value;
+                OnPropertyChanged("y");
+            }
+        }
+
+        public double radius
+        {
+            get { return Radius; }
+            set
+            {
+                Radius = value;
+                OnPropertyChanged("radius");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 
-    public int Y
-    {
-        get { return y; }
-        set
-        {
-            y = value;
-            OnPropertyChanged("Y");
-        }
-    }
-
-    public int Radius
-    {
-        get { return radius; }
-        set
-        {
-            radius = value;
-            OnPropertyChanged("Radius");
-        }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged([CallerMemberName] string name = null)
-    {
-        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
+   
 }
