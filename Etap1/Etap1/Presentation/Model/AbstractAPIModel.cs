@@ -20,7 +20,6 @@ namespace Etap1.Presentation.Model
         public abstract bool IsEnabled();
         public sealed class ModelApi : AbstractAPIModel
 
-            //zmiany poniżej
         {
             private AbstractLogicApi logicApi = AbstractLogicApi.CreateApi(null);
             private ObservableCollection<Circle> circles = new ObservableCollection<Circle>();
@@ -56,13 +55,13 @@ namespace Etap1.Presentation.Model
 
         public override ObservableCollection<Circle> GetAllCircles()
         {
-            List<Orb> orbs = logicApi.GetOrbs();
-            Circles.Clear();
-            foreach (Orb orb in orbs)
+            List<Ball> balls = logicApi.GetBalls();
+            Balls.Clear();
+            foreach (Ball ball in balls)
             {
-                Circles.Add(new Circle(orb));
+                Balls.Add(new Circle(orb));
             }
-            return Circles;
+            return Balls;
         }
 
         public override void Enable()
