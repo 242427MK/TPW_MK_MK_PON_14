@@ -12,13 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="data\Data.csproj" />
-    <None Include="logic\Logic.csproj" />
-    <None Include="presentation\model\Model.csproj" />
-    <None Include="Presentation\ViewModel\ViewModel.csproj" />
-    <None Include="presentation\view\View.csproj" />
     <None Include="presentation\view\View.csproj.user" />
-    <None Include="tests\Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>
