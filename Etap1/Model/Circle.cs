@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Logic;
- 
+
 namespace Model
 {
     public class Circle : INotifyPropertyChanged
