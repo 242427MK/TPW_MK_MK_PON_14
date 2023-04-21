@@ -9,6 +9,7 @@ namespace ViewModel
     public class ViewModelApi : INotifyPropertyChanged
     {
         private AbstractModelApi modelApi/* = AbstractModelApi.CreateApi()*/;
+
         private int ballQuantity = 1;
         public string BallQuantity
         {
@@ -70,7 +71,7 @@ namespace ViewModel
             {
                 isEnabled = value;
                 OnPropertyChanged("IsEnabled");
-                OnPropertyChanged("IsDisabled");
+                //OnPropertyChanged("IsDisabled");
             }
         }
         public bool IsDisabled

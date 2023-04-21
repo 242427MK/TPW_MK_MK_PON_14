@@ -5,20 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
         mc:Ignorable="d"
-        Title="MainWindow" Height = "700" Width = "900" >
+        Title="MainWindow" Height="650" Width="600" ResizeMode="NoResize">
 
-   
-    <Grid Margin="-3424,-992,0,-3968" >
 
-        <Grid.ColumnDefinitions >
-            <ColumnDefinition Width = "800" />
-            <ColumnDefinition Width = "100" />
-        </Grid.ColumnDefinitions >
+    <Grid Height="650" Width="600">
 
-        <TextBox HorizontalAlignment = "Center" Margin = "0,16,0,0" TextWrapping = "Wrap" Text = "{Binding BallQuantity, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment = "Top" Width = "70" Height = "18" Grid.Column = "1" />
-        <Button Content = "Start" HorizontalAlignment = "Center" Margin = "0,51,0,0" VerticalAlignment = "Top" Width = "70" Height = "25" Grid.Column = "1" Command = "{Binding EnableSignal}" IsEnabled = "{Binding IsEnabled}" />
-        <Button Content = "Stop" HorizontalAlignment = "Center" Margin = "0,81,0,0" VerticalAlignment = "Top" Width = "70" Height = "25" Command = "{Binding DisableSignal}" Grid.Column = "1" IsEnabled = "{Binding IsDisabled, Mode=OneWay}" />
-
+        <Button Content="Generuj kulki" Command="{Binding EnableSignal}" Margin="0,0,450,626" Background="White"/>
+        <Button Content="Zatrzymaj wątki" Command="{Binding DisableSignal}" Margin="150,0,300,626" Background="White"/>
+        <TextBox Margin="300,0,0,626" Text="{Binding BallQuantity, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Width="300" Height="24"/>
         <ItemsControl ItemsSource = "{Binding BallList}" Margin="2162,940,-3772,3912" RenderTransformOrigin="0.41,0.192" Grid.Column="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -33,7 +27,11 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Ellipse Height = "{Binding radius}" Width = "{Binding radius}" Stroke = "BlueViolet" Fill = "DarkGreen"/>
+                    <Ellipse Height="20" Width="20" Fill="Black">
+                        <Ellipse.RenderTransform>
+                            <TranslateTransform X="-10" Y="-10" />
+                        </Ellipse.RenderTransform>
+                    </Ellipse>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
