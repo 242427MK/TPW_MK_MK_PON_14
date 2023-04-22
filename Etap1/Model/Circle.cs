@@ -1,4 +1,4 @@
-﻿
+﻿using Data;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -8,36 +8,17 @@ namespace Model
 {
     public class Circle : INotifyPropertyChanged
     {
-        private double X;
-        private double Y;
-        private double Radius;
-
         public Circle(Ball ball)
         {
-            this.X = ball.x;
-            this.Y = ball.y;
-            this.Radius = ball.radius;
-            ball.PropertyChanged += Update;
+            ball.PropertyChanged += propertyChanged;
+            this.x = ball.x;
+            this.y = ball.y;
         }
 
-        private void Update(object source, PropertyChangedEventArgs key)
-        {
-            Ball sourceBall = (Ball)source;
-            if (key.PropertyName == "x")
-            {
-                this.X = sourceBall.x - sourceBall.radius;
-            }
-            if (key.PropertyName == "y")
-            {
-                this.Y = sourceBall.y - sourceBall.radius;
-            }
-            if (key.PropertyName == "radius")
-            {
-                this.Radius = sourceBall.radius;
-            }
-        }
+        private int X;
+        private int Y;
 
-        public double x
+        public int x
         {
             get { return X; }
             set
@@ -46,8 +27,7 @@ namespace Model
                 OnPropertyChanged("x");
             }
         }
-
-        public double y
+        public int y
         {
             get { return Y; }
             set
@@ -57,20 +37,23 @@ namespace Model
             }
         }
 
-        public double radius
+        private void propertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            get { return Radius; }
-            set
+            Ball ball = (Ball)sender;
+            if (e.PropertyName == "x")
             {
-                Radius = value;
-                OnPropertyChanged("radius");
+                this.x = ball.x;
+            }
+            if (e.PropertyName == "y")
+            {
+                this.y = ball.y;
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

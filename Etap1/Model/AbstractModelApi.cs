@@ -3,77 +3,57 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using Logic;
+using Data;
 
 namespace Model
 {
     public abstract class AbstractModelApi
     {
-        public static AbstractModelApi CreateApi(AbstractLogicApi abstractLogicApi = null)
+        private static AbstractModelApi Instance = new ModelApi();
+
+        public static AbstractModelApi CreateNewInstance(AbstractDataApi dataApi)
         {
-            return new ModelApi();
+            return new ModelApi(dataApi);
         }
-        public abstract void CreateScene(int orbQuantity, int orbRadius);
-        public abstract ObservableCollection<Circle> GetAllCircles();
-        public abstract void Enable();
-        public abstract void Disable();
-        public abstract bool IsEnabled();
-        public sealed class ModelApi : AbstractModelApi
+
+        public static AbstractModelApi instance
         {
-            private AbstractLogicApi logicApi = AbstractLogicApi.CreateApi(null);
-            private ObservableCollection<Circle> circles = new ObservableCollection<Circle>();
-            public ObservableCollection<Circle> Circles
+            get { return Instance; }
+        }
+
+        public abstract void BallsToCircles();
+
+        public abstract ObservableCollection<Circle> GetCircles();
+
+        internal sealed class ModelApi : AbstractModelApi
+        {
+            internal ModelApi()
             {
-                get
+                dataApi = AbstractDataApi.instance;
+            }
+
+            internal ModelApi(AbstractDataApi dataApi)
+            {
+                this.dataApi = dataApi;
+            }
+
+            AbstractDataApi dataApi = AbstractDataApi.instance;
+
+            ObservableCollection<Circle> CircleCollection = new ObservableCollection<Circle>();
+
+            public override void BallsToCircles()
+            {
+                List<Ball> BallList = dataApi.GetBallList();
+                CircleCollection.Clear();
+                foreach (Ball ball in BallList)
                 {
-                    return circles;
-                }
-                set
-                {
-                    circles = value;
+                    CircleCollection.Add(new Circle(ball));
                 }
             }
 
-            public ModelApi(AbstractLogicApi abstractLogicApi = null)
+            public override ObservableCollection<Circle> GetCircles()
             {
-                if (abstractLogicApi == null)
-                {
-                    this.logicApi = AbstractLogicApi.CreateApi();
-                }
-                else
-                {
-                    this.logicApi = abstractLogicApi;
-                }
-            }
-
-            public override void CreateScene(int ballQuantity, int ballRadius)
-            {
-                logicApi.CreateScene(750, 600, ballQuantity, ballRadius);
-            }
-
-            public override ObservableCollection<Circle> GetAllCircles()
-            {
-                List<Ball> balls = logicApi.GetBalls();
-                Circles.Clear();
-                foreach (Ball ball in balls)
-                {
-                    Circles.Add(new Circle(ball));
-                }
-                return Circles;
-            }
-
-            public override void Enable()
-            {
-                logicApi.Enable();
-            }
-
-            public override void Disable()
-            {
-                logicApi.Disable();
-            }
-
-            public override bool IsEnabled()
-            {
-                return logicApi.IsEnabled();
+                return CircleCollection;
             }
         }
     }

@@ -1,105 +1,87 @@
-﻿using Model;
+﻿using Logic;
+using Model;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ViewModel
 {
-    public class ViewModelApi : INotifyPropertyChanged
-    {
-        private AbstractModelApi modelApi/* = AbstractModelApi.CreateApi()*/;
-
-        private int ballQuantity = 1;
-        public string BallQuantity
+        public class ViewModelApi : INotifyPropertyChanged
         {
-            get
+            AbstractModelApi modelAPI = AbstractModelApi.instance;
+            AbstractLogicApi logicAPI = AbstractLogicApi.instance;
+
+            public ViewModelApi()
             {
-                return Convert.ToString(ballQuantity);
+                this.SignalStart = new Signal(Start);
+                this.SignalStop = new Signal(Stop);
             }
-            set
+
+            public string BallQuantity
             {
-                ballQuantity = Convert.ToInt32(value);
-                OnPropertyChanged("BallQuantity");
+                get;
+                set;
             }
-        }
-        private int ballRadius = 25;
 
-        public ICommand EnableSignal
-        {
-            get;
-            set;
-        }
-        public ICommand DisableSignal
-        {
-            get;
-            set;
-        }
+            private ObservableCollection<Circle> CircleCollection;
 
-        private ObservableCollection<Circle> ballList;
-        public ObservableCollection<Circle> BallList
-        {
-            get { return ballList; }
-            set
+            public ObservableCollection<Circle> circleCollection
             {
-                if (value.Equals(this.ballList)) return;
-                ballList = value;
-                OnPropertyChanged("ballList");
+                get { return CircleCollection; }
+                set
+                {
+                    CircleCollection = value;
+                    OnPropertyChanged("CircleCollection");
+                }
             }
-        }
 
-        public ViewModelApi() : this(null) { }
-        public ViewModelApi(AbstractModelApi modelApi = null)
-        {
-            EnableSignal = new Signal(enable);
-            DisableSignal = new Signal(disable);
-            if (modelApi == null)
+            public ICommand SignalStart
             {
-                this.modelApi = AbstractModelApi.CreateApi();
+                get;
+                set;
             }
-            else
+
+            public ICommand SignalStop
             {
-                this.modelApi = modelApi;
+                get;
+                set;
             }
-        }
 
-        private bool isEnabled = true;
-        public bool IsEnabled
-        {
-            get { return isEnabled; }
-            set
+            public void Start()
             {
-                isEnabled = value;
-                OnPropertyChanged("IsEnabled");
-                //OnPropertyChanged("IsDisabled");
+                logicAPI.GenerateRandomBalls(Convert.ToInt16(BallQuantity));
+                modelAPI.BallsToCircles();
+                CircleCollection = modelAPI.GetCircles();
+                foreach (Circle circle in CircleCollection)
+                {
+                    circle.PropertyChanged += propertyChanged;
+                }
+                logicAPI.CreateThreads();
             }
-        }
-        public bool IsDisabled
-        {
-            get
+
+            public void Stop()
             {
-                return !isEnabled;
+                logicAPI.Stopthreads();
             }
-        }
 
-        private void enable()
-        {
-            modelApi.CreateScene(ballQuantity, ballRadius);
-            modelApi.Enable();
-            isEnabled = true;
-            ballList = modelApi.GetAllCircles();
-        }
+            private void propertyChanged(object sender, PropertyChangedEventArgs e)
+            {
+                OnPropertyChanged("CircleCollection");
+            }
 
-        private void disable()
-        {
-            modelApi.Disable();
-            IsEnabled = false;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            public event PropertyChangedEventHandler PropertyChanged;
+            protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            {
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
-}
+

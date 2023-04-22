@@ -74,10 +74,10 @@ namespace Logic
                         {
                             ball.x += dx;
                             ball.y += dy;
-                            while (ball.x < 10)  ball.x += 580;
-                            while (ball.x > 590) ball.x -= 580;
-                            while (ball.y < 10)  ball.y += 580;
-                            while (ball.y > 590) ball.y -= 580;
+                            while (ball.x < 10)  ball.x += 30;
+                            while (ball.x > 590) ball.x -= 30;
+                            while (ball.y < 10)  ball.y += 30;
+                            while (ball.y > 590) ball.y -= 30;
 
                             Thread.Sleep(16);
                         }
