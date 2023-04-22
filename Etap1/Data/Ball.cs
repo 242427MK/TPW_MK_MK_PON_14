@@ -8,94 +8,39 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class Ball
+    public class Ball : INotifyPropertyChanged
     {
-        private double X;
-        private double Y;
-
-        private double Radius;
-
-        private double speedX;
-        private double speedY;
-
-
-        public Ball(double x, double y, double radius)
+        public Ball(int x, int y)
         {
-
-            X = x;
-            Y = y;
-            Radius = radius;
-
-            Random random = new Random();
-            double xSpeed = 0;
-            do
-            {
-                xSpeed = random.NextDouble() * 0.99;
-            } while (xSpeed == 0);
-
-            double ySpeed = Math.Sqrt(4 - (xSpeed * xSpeed));
-            ySpeed = (random.Next(-1, 1) < 0) ? ySpeed : -ySpeed;
-
-
-            speedX = xSpeed;
-            speedY = ySpeed;
+            this.x = x; this.y = y;
         }
 
-        public double x
+        private int X;
+        private int Y;
+
+        public int x
         {
-            get { return X; }
+            get { return this.X; }
             set
             {
-                X = value;
-                OnPropertyChanged("x");
+                this.X = value;
+                OnPropertyChanged(nameof(x));
             }
         }
-
-        public double y
+        public int y
         {
-            get { return Y; }
+            get { return this.Y; }
             set
             {
-                Y = value;
-                OnPropertyChanged("y");
+                this.Y = value;
+                OnPropertyChanged(nameof(y));
             }
-        }
-
-        public double radius
-        {
-            get { return Radius; }
-            set
-            {
-                Radius = value;
-                OnPropertyChanged("radius");
-            }
-        }
-
-        public double SpeedX
-        {
-            get { return speedX; }
-            set { speedX = value; }
-        }
-
-        public double SpeedY
-        {
-            get { return speedY; }
-            set { speedY = value; }
-        }
-
-
-        public void move()
-        {
-            this.X += this.speedX;
-            this.Y += this.speedY;
-            OnPropertyChanged("position");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        protected void OnPropertyChanged(string propertyName)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }

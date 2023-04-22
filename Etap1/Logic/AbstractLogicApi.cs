@@ -1,89 +1,94 @@
-﻿using Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Data;
 
 namespace Logic
 {
     public abstract class AbstractLogicApi
     {
+        private static AbstractLogicApi Instance = new LogicApi();
 
-        public static AbstractLogicApi CreateApi(AbstractDataApi abstractDataApi = null)
+        public static AbstractLogicApi CreateNewInstance(AbstractDataApi dataApi)
         {
-            return new LogicApi(abstractDataApi);
+            return new LogicApi(dataApi);
         }
 
-        public abstract void CreateScene(int width, int height, int ballQuantity, int ballRadius);
+        public static AbstractLogicApi instance
+        {
+            get { return Instance; }
+        }
 
-        public abstract List<Ball> GetBalls();
+        public abstract void GenerateRandomBalls(int num);
 
-        public abstract void Enable();
+        public abstract void CreateThreads();
 
-        public abstract void Disable();
-
-        public abstract bool IsEnabled();
+        public abstract void Stopthreads();
 
         internal sealed class LogicApi : AbstractLogicApi
         {
-            private AbstractDataApi dataApi;
-
-            private Scene scene;
-
-            public LogicApi(AbstractDataApi abstractDataApi = null)
+            internal LogicApi()
             {
-                if (abstractDataApi == null)
+                DataApi = AbstractDataApi.instance;
+            }
+
+            internal LogicApi(AbstractDataApi dataApi)
+            {
+                this.DataApi = dataApi;
+            }
+
+            AbstractDataApi DataApi;
+
+            private bool StopThreads = false;
+
+            public override void GenerateRandomBalls(int num)
+            {
+                List<Ball> balls = DataApi.GetBallList();
+                balls.Clear();
+                Random rand = new Random();
+
+                for (int i = 0; i < num; i++)
                 {
-                    this.dataApi = AbstractDataApi.CreateApi();
-                }
-                else
-                {
-                    this.dataApi = abstractDataApi;
+                    int x = rand.Next(10, 590);
+                    int y = rand.Next(10, 590);
+                    balls.Add(new Ball(x, y));
                 }
             }
 
-            public override void CreateScene(int width, int height, int ballQuantity, int ballRadius)
+            public override void CreateThreads()
             {
-                this.scene = new Scene(width, height);
-                scene.GenerateBallList(ballQuantity, ballRadius);
-                foreach (Ball ball1 in scene.Balls)
+                List<Ball> balls = DataApi.GetBallList();
+                StopThreads = false;
+
+                foreach (Ball ball in balls)
                 {
-                    Thread thread = new Thread(() =>
+                    Thread watek = new Thread(() =>
                     {
-                        int xDirection;
-                        int yDirection;
-
-                        while (true)
+                        Random rand = new Random();
+                        int dx = rand.Next(-10, 10);
+                        int dy = rand.Next(-10, 10);
+                        while (!StopThreads)
                         {
-                            Random rng = new Random();
+                            ball.x += dx;
+                            ball.y += dy;
+                            while (ball.x < 10)  ball.x += 580;
+                            while (ball.x > 590) ball.x -= 580;
+                            while (ball.y < 10)  ball.y += 580;
+                            while (ball.y > 590) ball.y -= 580;
 
-                            xDirection = rng.Next(-20, 20);
-                            yDirection = rng.Next(-20, 20);
-
-                            ball1.x += xDirection;
-                            ball1.y += yDirection;
-
-                            Thread.Sleep(15);
+                            Thread.Sleep(16);
                         }
                     });
-                    thread.Start();
+                    watek.Start();
                 }
             }
 
-            public override List<Ball> GetBalls()
+            public override void Stopthreads()
             {
-                return scene.Balls;
-            }
-
-            public override void Enable()
-            {
-                this.scene.Enabled = true;
-            }
-
-            public override void Disable()
-            {
-                this.scene.Enabled = false;
-            }
-
-            public override bool IsEnabled()
-            {
-                return this.scene.Enabled;
+                StopThreads = true;
             }
         }
     }

@@ -9,15 +9,27 @@ namespace Data
 
     public abstract class AbstractDataApi
     {
-        public abstract void CreateScene(int width, int height, int ballQuantity, int ballRadius);
-        public abstract List<Ball> GetBalls();
+        private static DataApi Instance = new DataApi();
 
-        public abstract void Disable();
+        public static AbstractDataApi CreateNewInstance() { return new DataApi(); }
 
-        public abstract Scene Scene { get; }
-        public static AbstractDataApi CreateApi()
+        public abstract List<Ball> GetBallList();
+
+        public static AbstractDataApi instance
         {
-            return new DataApi();
+            get { return Instance; }
+        }
+
+        internal sealed class DataApi : AbstractDataApi
+        {
+            internal DataApi() { }
+
+            private List<Ball> BallList = new List<Ball>();
+
+            public override List<Ball> GetBallList()
+            {
+                return BallList;
+            }
         }
     }
 }
