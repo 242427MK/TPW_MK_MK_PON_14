@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class Ball : INotifyPropertyChanged
+    public class Orb : INotifyPropertyChanged
     {
-        public Ball(int x, int y)
+        public Orb(int x, int y)
         {
             this.x = x; this.y = y;
         }

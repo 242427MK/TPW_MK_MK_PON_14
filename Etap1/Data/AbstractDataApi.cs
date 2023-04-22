@@ -13,7 +13,7 @@ namespace Data
 
         public static AbstractDataApi CreateNewInstance() { return new DataApi(); }
 
-        public abstract List<Ball> GetBallList();
+        public abstract List<Orb> GetOrbList();
 
         public static AbstractDataApi instance
         {
@@ -24,11 +24,11 @@ namespace Data
         {
             internal DataApi() { }
 
-            private List<Ball> BallList = new List<Ball>();
+            private List<Orb> OrbList = new List<Orb>();
 
-            public override List<Ball> GetBallList()
+            public override List<Orb> GetOrbList()
             {
-                return BallList;
+                return OrbList;
             }
         }
     }

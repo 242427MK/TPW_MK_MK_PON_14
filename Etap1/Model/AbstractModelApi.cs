@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using Logic;
-using Data;
+
 
 namespace Model
 {
@@ -11,9 +11,9 @@ namespace Model
     {
         private static AbstractModelApi Instance = new ModelApi();
 
-        public static AbstractModelApi CreateNewInstance(AbstractDataApi dataApi)
+        public static AbstractModelApi CreateNewInstance(AbstractLogicApi logicApi)
         {
-            return new ModelApi(dataApi);
+            return new ModelApi(logicApi);
         }
 
         public static AbstractModelApi instance
@@ -29,21 +29,21 @@ namespace Model
         {
             internal ModelApi()
             {
-                dataApi = AbstractDataApi.instance;
+                logicApi = AbstractLogicApi.instance;
             }
 
-            internal ModelApi(AbstractDataApi dataApi)
+            internal ModelApi(AbstractLogicApi logicApi)
             {
-                this.dataApi = dataApi;
+                this.logicApi = logicApi;
             }
 
-            AbstractDataApi dataApi = AbstractDataApi.instance;
+            AbstractLogicApi logicApi = AbstractLogicApi.instance;
 
             ObservableCollection<Circle> CircleCollection = new ObservableCollection<Circle>();
 
             public override void BallsToCircles()
             {
-                List<Ball> BallList = dataApi.GetBallList();
+                List<Ball> BallList = logicApi.GetBallList();
                 CircleCollection.Clear();
                 foreach (Ball ball in BallList)
                 {

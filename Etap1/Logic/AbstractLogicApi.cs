@@ -28,8 +28,17 @@ namespace Logic
 
         public abstract void Stopthreads();
 
+        public abstract List<Ball> GetBallList();
+
         internal sealed class LogicApi : AbstractLogicApi
         {
+
+            private List<Ball> balls = new List<Ball>();
+
+            public override List<Ball> GetBallList()
+            {
+                return balls;
+            }
             internal LogicApi()
             {
                 DataApi = AbstractDataApi.instance;
@@ -46,21 +55,28 @@ namespace Logic
 
             public override void GenerateRandomBalls(int num)
             {
-                List<Ball> balls = DataApi.GetBallList();
-                balls.Clear();
+                List<Orb> orbs = DataApi.GetOrbList();
+                orbs.Clear();
                 Random rand = new Random();
 
                 for (int i = 0; i < num; i++)
                 {
                     int x = rand.Next(10, 590);
                     int y = rand.Next(10, 590);
-                    balls.Add(new Ball(x, y));
+                    orbs.Add(new Orb(x, y));
+                }
+                //List<Ball> balls = new List<Ball>();
+                balls.Clear();
+                for (int i = 0; i<orbs.Count; i++)
+                {
+                    balls.Add(new Ball(orbs[i]));
                 }
             }
 
+
             public override void CreateThreads()
             {
-                List<Ball> balls = DataApi.GetBallList();
+                List<Ball> balls = GetBallList();
                 StopThreads = false;
 
                 foreach (Ball ball in balls)
@@ -74,9 +90,9 @@ namespace Logic
                         {
                             ball.x += dx;
                             ball.y += dy;
-                            while (ball.x < 10)  ball.x += 30;
+                            while (ball.x < 10) ball.x += 30;
                             while (ball.x > 590) ball.x -= 30;
-                            while (ball.y < 10)  ball.y += 30;
+                            while (ball.y < 10) ball.y += 30;
                             while (ball.y > 590) ball.y -= 30;
 
                             Thread.Sleep(16);
