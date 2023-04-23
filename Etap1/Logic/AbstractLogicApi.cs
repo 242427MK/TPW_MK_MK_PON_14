@@ -84,18 +84,20 @@ namespace Logic
                     Thread watek = new Thread(() =>
                     {
                         Random rand = new Random();
-                        int dx = rand.Next(-10, 10);
-                        int dy = rand.Next(-10, 10);
+                        int dx;
+                        int dy;
                         while (!StopThreads)
                         {
+                            dx = rand.Next(-5, 5);
+                            dy = rand.Next(-5, 5);
                             ball.x += dx;
                             ball.y += dy;
-                            while (ball.x < 10) ball.x += 30;
-                            while (ball.x > 590) ball.x -= 30;
-                            while (ball.y < 10) ball.y += 30;
-                            while (ball.y > 590) ball.y -= 30;
+                            while (ball.x < 10) ball.x += 20;
+                            while (ball.x > 590) ball.x -= 20;
+                            while (ball.y < 10) ball.y += 20;
+                            while (ball.y > 590) ball.y -= 20;
 
-                            Thread.Sleep(16);
+                            Thread.Sleep(20);
                         }
                     });
                     watek.Start();
