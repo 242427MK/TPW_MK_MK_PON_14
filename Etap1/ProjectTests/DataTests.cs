@@ -1,7 +1,12 @@
 ﻿using Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Tests
+namespace ProjectTests
 {
     [TestClass]
     class DataTests
@@ -12,7 +17,7 @@ namespace Tests
 
 
         [TestMethod]
-        public void OrbTest() 
+        public void OrbTest()
         {
             Assert.AreEqual(orb1.x, 4);
             Assert.AreEqual(orb1.y, 5);
@@ -37,7 +42,7 @@ namespace Tests
 
             Assert.IsNotNull(OrbList);
         }
-     
+
 
     }
 }
