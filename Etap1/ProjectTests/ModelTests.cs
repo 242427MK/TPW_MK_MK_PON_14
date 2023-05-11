@@ -17,25 +17,31 @@ namespace ModelTests
         [TestMethod]
         public void CircleTests()
         {
-            int x = 10;
-            int y = 10;
+            double x = 10;
+            double y = 10;
+            double r = 10;
+            double w = 10;
 
-            Orb orb = new Orb(x, y);
-            Ball ball = new Ball(orb);
-            Circle circle = new Circle(ball);
+
+            Orb orb = new Orb(x, y, r, w);
+
+            Circle circle = new Circle(orb);
 
             Assert.AreEqual(circle.x, x);
             Assert.AreEqual(circle.y, y);
-
+            Assert.AreEqual(circle.radius, r);
 
             int x2 = 40;
             int y2 = 50;
+            int r2 = 60;
 
             circle.x = x2;
             circle.y = y2;
+            circle.radius = r2;
 
             Assert.AreEqual(circle.x, x2);
             Assert.AreEqual(circle.y, y2);
+            Assert.AreEqual(circle.radius, r2);
         }
 
 

@@ -10,15 +10,33 @@ namespace Data
 {
     public class Orb : INotifyPropertyChanged
     {
-        public Orb(int x, int y)
+        private double X;
+        private double Y;
+        private double Radius;
+        private double Weight;
+        private double[] speed = new double[2];
+
+        public Orb(double x, double y, double radius, double weight)
         {
-            this.x = x; this.y = y;
+            this.x = x;
+            this.y = y;
+            this.Radius = radius;
+            this.Weight = weight;
+            Random random = new Random();
+            double xSpeed = 0;
+            do
+            {
+                xSpeed = random.NextDouble() * 0.99;
+            } while (xSpeed == 0);
+            double ySpeed = Math.Sqrt(4 - (xSpeed * xSpeed));
+            ySpeed = (random.Next(-1, 1) < 0) ? ySpeed : -ySpeed;
+            this.speed[0] = xSpeed;
+            this.speed[1] = ySpeed;
         }
 
-        private int X;
-        private int Y;
+        
 
-        public int x
+        public double x
         {
             get { return this.X; }
             set
@@ -27,7 +45,7 @@ namespace Data
                 OnPropertyChanged(nameof(x));
             }
         }
-        public int y
+        public double y
         {
             get { return this.Y; }
             set
@@ -35,6 +53,40 @@ namespace Data
                 this.Y = value;
                 OnPropertyChanged(nameof(y));
             }
+        }
+
+        public double radius
+        {
+            get { return Radius; }
+            set
+            {
+                Radius = value;
+                OnPropertyChanged(nameof(radius));
+            }
+        }
+
+        public double XSpeed
+        {
+            get { return speed[0]; }
+            set { speed[0] = value; }
+        }
+
+        public double YSpeed
+        {
+            get { return speed[1]; }
+            set { speed[1] = value; }
+        }
+
+        public double weight
+        {
+            get { return Weight; }
+        }
+
+        public void move()
+        {
+            this.X += this.XSpeed;
+            this.Y += this.YSpeed;
+            OnPropertyChanged("Position");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

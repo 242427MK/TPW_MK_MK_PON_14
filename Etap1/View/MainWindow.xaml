@@ -28,11 +28,7 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Ellipse Height="20" Width="20" Fill="Black">
-                        <Ellipse.RenderTransform>
-                            <TranslateTransform X="-10" Y="-10" />
-                        </Ellipse.RenderTransform>
-                    </Ellipse>
+                    <Ellipse Height="{Binding radius}" Width="{Binding radius}" Stroke="Black" Fill="Red"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

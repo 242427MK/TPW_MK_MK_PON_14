@@ -28,16 +28,16 @@ namespace Logic
 
         public abstract void Stopthreads();
 
-        public abstract List<Ball> GetBallList();
+        public abstract List<Orb> GetOrbList();
 
         internal sealed class LogicApi : AbstractLogicApi
         {
 
-            private List<Ball> balls = new List<Ball>();
+            private List<Orb> orbs = new List<Orb>();
 
-            public override List<Ball> GetBallList()
+            public override List<Orb> GetOrbList()
             {
-                return balls;
+                return orbs;
             }
             internal LogicApi()
             {
@@ -55,31 +55,24 @@ namespace Logic
 
             public override void GenerateRandomBalls(int num)
             {
-                List<Orb> orbs = DataApi.GetOrbList();
-                orbs.Clear();
                 Random rand = new Random();
-
+                orbs.Clear();
                 for (int i = 0; i < num; i++)
                 {
                     int x = rand.Next(10, 590);
                     int y = rand.Next(10, 590);
-                    orbs.Add(new Orb(x, y));
+                    orbs.Add(new Orb(x, y, 20, 20));
                 }
-                //List<Ball> balls = new List<Ball>();
-                balls.Clear();
-                for (int i = 0; i<orbs.Count; i++)
-                {
-                    balls.Add(new Ball(orbs[i]));
-                }
+
             }
 
 
             public override void CreateThreads()
             {
-                List<Ball> balls = GetBallList();
+                List<Orb> orbs = GetOrbList();
                 StopThreads = false;
 
-                foreach (Ball ball in balls)
+                foreach (Orb orb in orbs)
                 {
                     Thread watek = new Thread(() =>
                     {
@@ -90,12 +83,12 @@ namespace Logic
                         {
                             dx = rand.Next(-5, 5);
                             dy = rand.Next(-5, 5);
-                            ball.x += dx;
-                            ball.y += dy;
-                            while (ball.x < 10) ball.x += 20;
-                            while (ball.x > 590) ball.x -= 20;
-                            while (ball.y < 10) ball.y += 20;
-                            while (ball.y > 590) ball.y -= 20;
+                            orb.x += dx;
+                            orb.y += dy;
+                            while (orb.x < 10) orb.x += 20;
+                            while (orb.x > 590) orb.x -= 20;
+                            while (orb.y < 10) orb.y += 20;
+                            while (orb.y > 590) orb.y -= 20;
 
                             Thread.Sleep(20);
                         }

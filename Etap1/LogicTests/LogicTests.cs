@@ -18,7 +18,7 @@ namespace LogicTests
             int iloscKulek = 10;
 
             LogicApi.GenerateRandomBalls(iloscKulek);
-            List<Ball> balls = LogicApi.GetBallList();
+            List<Orb> balls = LogicApi.GetOrbList();
 
             Assert.AreEqual(balls.Count, iloscKulek);
         }

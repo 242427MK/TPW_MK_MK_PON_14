@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using Data;
 using Logic;
 
 
@@ -43,11 +44,11 @@ namespace Model
 
             public override void BallsToCircles()
             {
-                List<Ball> BallList = logicApi.GetBallList();
+                List<Orb> OrbList = logicApi.GetOrbList();
                 CircleCollection.Clear();
-                foreach (Ball ball in BallList)
+                foreach (Orb orb in OrbList)
                 {
-                    CircleCollection.Add(new Circle(ball));
+                    CircleCollection.Add(new Circle(orb));
                 }
             }
 
