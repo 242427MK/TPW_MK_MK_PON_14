@@ -9,7 +9,7 @@ using Data;
 using Logic;
 using Model;
 
-namespace ProjectTests
+namespace ModelTests
 {
     [TestClass()]
     public class ModelTests
