@@ -82,12 +82,6 @@ namespace Data
             get { return Weight; }
         }
 
-        public void move()
-        {
-            this.X += this.XSpeed;
-            this.Y += this.YSpeed;
-            OnPropertyChanged("Position");
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

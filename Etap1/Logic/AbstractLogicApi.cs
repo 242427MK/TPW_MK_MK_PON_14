@@ -54,6 +54,19 @@ namespace Logic
 
             private bool StopThreads = false;
 
+            private bool IsOverlapping(Orb newOrb)
+            {
+                foreach (Orb orb in orbs)
+                {
+                    if (Math.Sqrt(Math.Pow(newOrb.x - orb.x, 2) + Math.Pow(newOrb.y - orb.y, 2)) < newOrb.radius + orb.radius)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+
             public override void GenerateRandomBalls(int num)
             {
                 Random rand = new Random();
@@ -62,7 +75,14 @@ namespace Logic
                 {
                     int x = rand.Next(10, 590);
                     int y = rand.Next(10, 590);
-                    orbs.Add(new Orb(x, y, 20, 20));
+                    Orb newOrb = new Orb(x, y, 20, 20);
+                    while (IsOverlapping(newOrb)) // sprawdzenie czy nowa kula nie nachodzi na inne kulki w liście
+                    {
+                        x = rand.Next(10, 590);
+                        y = rand.Next(10, 590);
+                        newOrb = new Orb(x, y, 20, 20);
+                    }
+                    orbs.Add(newOrb);  
                 }
 
             }
@@ -82,11 +102,14 @@ namespace Logic
                         int dy;
                         while (!StopThreads)
                         {
+
                             orb.x += orb.XSpeed;
                             orb.y += orb.YSpeed;
+                           
                             CheckCollision(orb);
 
-                            Thread.Sleep(20);
+                            Thread.Sleep(15);
+                           
                         }
                     });
                     watek.Start();
@@ -100,20 +123,18 @@ namespace Logic
                     orb.XSpeed = -orb.XSpeed;
                     orb.x = 600 - orb.radius;
                 }
-                if ((orb.x - orb.radius) <= 0)
+                if (orb.x <= 0)
                 {
                     orb.XSpeed = -orb.XSpeed;
-                    orb.x = orb.radius;
                 }
                 if ((orb.y + orb.radius) >= 600)
                 {
                     orb.YSpeed = -orb.YSpeed;
                     orb.y = 600 - orb.radius;
                 }
-                if ((orb.y - orb.radius) <= 0)
+                if (orb.y<= 0)
                 {
                     orb.YSpeed = -orb.YSpeed;
-                    orb.y = orb.radius;
                 }
             }
             private void OrbCollision(Orb orb)
@@ -126,7 +147,7 @@ namespace Logic
                     }
                     double xDiff = o.x - orb.x;
                     double yDiff = o.y - orb.y;
-                    double distance = Math.Sqrt((xDiff * xDiff) + (yDiff * yDiff));
+                    double distance = Math.Sqrt((xDiff * xDiff) + (yDiff * yDiff))*2;
                     if (distance <= (orb.radius + o.radius))
                     {
                         double newSpeed = ((o.XSpeed * (o.weight - orb.weight) + (orb.weight * orb.XSpeed * 2)) / (o.weight + orb.weight));
@@ -138,16 +159,6 @@ namespace Logic
                         o.YSpeed = newSpeed;
                     }
                 }
-            }
-
-            private void Update(object sender, PropertyChangedEventArgs ev)
-            {
-                Orb orb = (Orb)sender;
-                if (ev.PropertyName == "Position")
-                {
-                    CheckCollision(orb);
-                }
-
             }
 
             private void CheckCollision(Orb orb)

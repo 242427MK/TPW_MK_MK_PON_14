@@ -57,7 +57,7 @@ namespace ViewModel
 
             public void Start()
             {
-                logicAPI.GenerateRandomBalls(Convert.ToInt16(BallQuantity));
+                logicAPI.GenerateRandomBalls(Convert.ToInt32(BallQuantity));
                 modelAPI.BallsToCircles();
                 CircleCollection = modelAPI.GetCircles();
                 foreach (Circle circle in CircleCollection)
