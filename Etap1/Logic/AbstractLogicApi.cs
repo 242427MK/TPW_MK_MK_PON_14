@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -81,20 +82,78 @@ namespace Logic
                         int dy;
                         while (!StopThreads)
                         {
-                            dx = rand.Next(-5, 5);
-                            dy = rand.Next(-5, 5);
-                            orb.x += dx;
-                            orb.y += dy;
-                            while (orb.x < 10) orb.x += 20;
-                            while (orb.x > 590) orb.x -= 20;
-                            while (orb.y < 10) orb.y += 20;
-                            while (orb.y > 590) orb.y -= 20;
+                            orb.x += orb.XSpeed;
+                            orb.y += orb.YSpeed;
+                            CheckCollision(orb);
 
                             Thread.Sleep(20);
                         }
                     });
                     watek.Start();
                 }
+            }
+
+            private void AreaCollision(Orb orb)
+            {
+                if ((orb.x + orb.radius) >= 600)
+                {
+                    orb.XSpeed = -orb.XSpeed;
+                    orb.x = 600 - orb.radius;
+                }
+                if ((orb.x - orb.radius) <= 0)
+                {
+                    orb.XSpeed = -orb.XSpeed;
+                    orb.x = orb.radius;
+                }
+                if ((orb.y + orb.radius) >= 600)
+                {
+                    orb.YSpeed = -orb.YSpeed;
+                    orb.y = 600 - orb.radius;
+                }
+                if ((orb.y - orb.radius) <= 0)
+                {
+                    orb.YSpeed = -orb.YSpeed;
+                    orb.y = orb.radius;
+                }
+            }
+            private void OrbCollision(Orb orb)
+            {
+                foreach (Orb o in orbs)
+                {
+                    if (o == orb)
+                    {
+                        continue;
+                    }
+                    double xDiff = o.x - orb.x;
+                    double yDiff = o.y - orb.y;
+                    double distance = Math.Sqrt((xDiff * xDiff) + (yDiff * yDiff));
+                    if (distance <= (orb.radius + o.radius))
+                    {
+                        double newSpeed = ((o.XSpeed * (o.weight - orb.weight) + (orb.weight * orb.XSpeed * 2)) / (o.weight + orb.weight));
+                        orb.XSpeed = ((orb.XSpeed * (orb.weight - o.weight) + (o.weight * o.XSpeed * 2)) / (o.weight + orb.weight));
+                        o.XSpeed = newSpeed;
+
+                        newSpeed = ((o.YSpeed * (o.weight - orb.weight)) + (orb.weight * orb.YSpeed * 2) / (o.weight + orb.weight));
+                        orb.YSpeed = ((orb.YSpeed * (orb.weight - o.weight)) + (o.weight * o.YSpeed * 2) / (o.weight + orb.weight));
+                        o.YSpeed = newSpeed;
+                    }
+                }
+            }
+
+            private void Update(object sender, PropertyChangedEventArgs ev)
+            {
+                Orb orb = (Orb)sender;
+                if (ev.PropertyName == "Position")
+                {
+                    CheckCollision(orb);
+                }
+
+            }
+
+            private void CheckCollision(Orb orb)
+            {
+                AreaCollision(orb);
+                OrbCollision(orb);
             }
 
             public override void Stopthreads()
