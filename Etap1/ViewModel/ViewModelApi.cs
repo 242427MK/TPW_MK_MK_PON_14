@@ -16,7 +16,15 @@ namespace ViewModel
 {
         public class ViewModelApi : INotifyPropertyChanged
         {
-            AbstractModelApi modelAPI = AbstractModelApi.instance;
+            private bool isGenerating = false;
+
+            public bool IsGenerating
+            {
+                get { return isGenerating; }
+            }
+
+
+        AbstractModelApi modelAPI = AbstractModelApi.instance;
             AbstractLogicApi logicAPI = AbstractLogicApi.instance;
 
             public ViewModelApi()
@@ -57,6 +65,9 @@ namespace ViewModel
 
             public void Start()
             {
+                if (isGenerating) return;
+                isGenerating = true;
+
                 logicAPI.GenerateRandomBalls(Convert.ToInt32(BallQuantity));
                 modelAPI.BallsToCircles();
                 CircleCollection = modelAPI.GetCircles();
@@ -65,10 +76,11 @@ namespace ViewModel
                     circle.PropertyChanged += propertyChanged;
                 }
                 logicAPI.CreateThreads();
-            }
+        }
 
             public void Stop()
             {
+                isGenerating = false;
                 logicAPI.Stopthreads();
             }
 
