@@ -118,23 +118,25 @@ namespace Logic
 
             private void AreaCollision(Orb orb)
             {
-                if ((orb.x + orb.radius) >= 600)
+                if ((orb.x + orb.radius) >= DataApi.rightBorder())
                 {
                     orb.XSpeed = -orb.XSpeed;
-                    orb.x = 600 - orb.radius;
+                    orb.x = DataApi.rightBorder() - orb.radius;
                 }
-                if (orb.x <= 0)
+                if (orb.x <= DataApi.leftBorder())
                 {
                     orb.XSpeed = -orb.XSpeed;
+                    orb.x = DataApi.leftBorder();
                 }
-                if ((orb.y + orb.radius) >= 600)
+                if ((orb.y + orb.radius) >= DataApi.downBorder())
                 {
                     orb.YSpeed = -orb.YSpeed;
-                    orb.y = 600 - orb.radius;
+                    orb.y = DataApi.downBorder() - orb.radius;
                 }
-                if (orb.y<= 0)
+                if (orb.y <= DataApi.upBorder())
                 {
                     orb.YSpeed = -orb.YSpeed;
+                    orb.y = DataApi.upBorder();
                 }
             }
             private void OrbCollision(Orb orb)

@@ -9,6 +9,14 @@ namespace Data
 
     public abstract class AbstractDataApi
     {
+        public abstract int upBorder();
+
+        public abstract int downBorder();
+
+        public abstract int leftBorder();
+
+        public abstract int rightBorder();
+
         private static DataApi Instance = new DataApi();
 
         public static AbstractDataApi CreateNewInstance() { return new DataApi(); }
@@ -22,6 +30,31 @@ namespace Data
 
         internal sealed class DataApi : AbstractDataApi
         {
+            private int Up_border = 0;
+            private int Down_border = 600;
+            private int Left_border = 0;
+            private int Right_border = 600;
+
+            public override int upBorder()
+            {
+                return this.Up_border;
+            }
+
+            public override int downBorder()
+            {
+                return this.Down_border;
+            }
+
+            public override int leftBorder()
+            {
+                return this.Left_border;
+            }
+
+            public override int rightBorder()
+            {
+                return this.Right_border;
+            }
+
             internal DataApi() { }
 
             private List<Orb> OrbList = new List<Orb>();
