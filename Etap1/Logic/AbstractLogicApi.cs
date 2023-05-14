@@ -93,23 +93,23 @@ namespace Logic
                 List<Orb> orbs = GetOrbList();
                 StopThreads = false;
 
+                object lockObject = new object();
+                Dictionary<Orb, object> locks = new Dictionary<Orb, object>();
+
                 foreach (Orb orb in orbs)
                 {
+                    locks.Add(orb, new object());
                     Thread watek = new Thread(() =>
                     {
-                        Random rand = new Random();
-                        int dx;
-                        int dy;
                         while (!StopThreads)
                         {
-
-                            orb.x += orb.XSpeed;
-                            orb.y += orb.YSpeed;
-                           
-                            CheckCollision(orb);
-
+                            lock (locks[orb])
+                            {
+                                orb.x += orb.XSpeed;
+                                orb.y += orb.YSpeed;
+                                CheckCollision(orb);
+                            }
                             Thread.Sleep(15);
-                           
                         }
                     });
                     watek.Start();
