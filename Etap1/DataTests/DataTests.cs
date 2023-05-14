@@ -1,15 +1,8 @@
 using Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataTests
+namespace DataSss
 {
     [TestClass]
-    class DataTests
+    public class DataTests
     {
         Orb orb1 = new Orb(4, 5, 6, 7);
         Orb orb2 = new Orb(4, 5, 6, 7);
@@ -50,7 +43,5 @@ namespace DataTests
 
             Assert.IsNotNull(OrbList);
         }
-
-
     }
 }
