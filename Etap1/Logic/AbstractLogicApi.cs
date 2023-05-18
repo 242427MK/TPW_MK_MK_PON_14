@@ -87,6 +87,7 @@ namespace Logic
 
             }
 
+            
 
             public override void CreateThreads()
             {
@@ -94,22 +95,19 @@ namespace Logic
                 StopThreads = false;
 
                 object lockObject = new object();
-                Dictionary<Orb, object> locks = new Dictionary<Orb, object>();
 
                 foreach (Orb orb in orbs)
                 {
-                    locks.Add(orb, new object());
                     Thread watek = new Thread(() =>
                     {
                         while (!StopThreads)
                         {
-                            lock (locks[orb])
+                            lock (lockObject)
                             {
-                                orb.x += orb.XSpeed;
-                                orb.y += orb.YSpeed;
                                 CheckCollision(orb);
                             }
-                            Thread.Sleep(15);
+                            int sleepTime = (int)(15.0 / orb.SpeedVector());
+                            Thread.Sleep(sleepTime);
                         }
                     });
                     watek.Start();
@@ -172,6 +170,10 @@ namespace Logic
             public override void Stopthreads()
             {
                 StopThreads = true;
+                foreach (Orb orb in orbs)
+                {
+                    orb.stop();
+                }
             }
         }
     }

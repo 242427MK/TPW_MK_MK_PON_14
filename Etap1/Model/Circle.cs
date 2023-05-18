@@ -13,6 +13,7 @@ namespace Model
             orb.PropertyChanged += propertyChanged;
             this.x = orb.x;
             this.y = orb.y;
+            //setXY(orb.x,orb.y);
             this.radius = orb.radius;
         }
 
@@ -39,6 +40,24 @@ namespace Model
                 OnPropertyChanged("y");
             }
         }
+
+        /*
+        public double[] getXY()
+        {
+            double[] position = new double[2];
+            position[0] = X;
+            position[1] = Y;
+            return position;
+            OnPropertyChanged("xy");
+        }
+
+        private void setXY(double x, double y)
+        {
+            this.X = x;
+            this.Y = y;
+            OnPropertyChanged("xy");
+        }
+        */
 
         public double radius
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,13 +16,16 @@ namespace Data
         private double Radius;
         private double Weight;
         private double[] speed = new double[2];
+        private double speedVector;
+
+        private bool StopThreads = false;
 
         public Orb(double x, double y, double radius, double weight)
         {
-            this.x = x;
-            this.y = y;
+            setXY(x, y);
             this.Radius = radius;
             this.Weight = weight;
+
             Random random = new Random();
             double xSpeed = 0;
             do
@@ -32,27 +36,71 @@ namespace Data
             ySpeed = (random.Next(-1, 1) < 0) ? ySpeed : -ySpeed;
             this.speed[0] = xSpeed;
             this.speed[1] = ySpeed;
+
+            this.speedVector = Math.Sqrt((this.XSpeed * this.XSpeed) + (this.YSpeed * this.YSpeed));
+
+            Thread watek = new Thread(() =>
+            {
+                while (!StopThreads)
+                {
+                    move();
+                    updateSpeedVector();
+                    int sleepTime = (int)(15.0 / speedVector);
+                    sleepTime++;
+                    Thread.Sleep(sleepTime);
+                }
+            });
+            watek.Start();
         }
 
-        
 
+        public double SpeedVector()
+        {
+             return this.speedVector; 
+
+        }
+
+        public void updateSpeedVector()
+        {
+          this.speedVector  = Math.Sqrt((this.XSpeed * this.XSpeed) + (this.YSpeed * this.YSpeed));
+        }
+
+        public void stop()
+        {
+            this.StopThreads = true;
+        }
+
+        //zmienić OnPropertyChanged();
         public double x
         {
             get { return this.X; }
             set
             {
                 this.X = value;
-                OnPropertyChanged(nameof(x));
+                OnPropertyChanged("x");
             }
+
         }
+
         public double y
         {
             get { return this.Y; }
             set
             {
                 this.Y = value;
-                OnPropertyChanged(nameof(y));
+                OnPropertyChanged("y");
             }
+        }
+
+        private void setXY(double x, double y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        private void move()
+        {
+            setXY(this.x + this.XSpeed, this.y + this.YSpeed);
         }
 
         public double radius
