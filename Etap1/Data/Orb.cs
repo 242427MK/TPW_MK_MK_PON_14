@@ -23,8 +23,8 @@ namespace Data
         public Orb(double x, double y, double radius, double weight)
         {
             setXY(x, y);
-            this.Radius = radius;
-            this.Weight = weight;
+            Radius = radius;
+            Weight = weight;
 
             Random random = new Random();
             double xSpeed = 0;
@@ -34,10 +34,10 @@ namespace Data
             } while (xSpeed == 0);
             double ySpeed = Math.Sqrt(4 - (xSpeed * xSpeed));
             ySpeed = (random.Next(-1, 1) < 0) ? ySpeed : -ySpeed;
-            this.speed[0] = xSpeed;
-            this.speed[1] = ySpeed;
+            speed[0] = xSpeed;
+            speed[1] = ySpeed;
 
-            this.speedVector = Math.Sqrt((this.XSpeed * this.XSpeed) + (this.YSpeed * this.YSpeed));
+            speedVector = Math.Sqrt((XSpeed * XSpeed) + (YSpeed * YSpeed));
 
             Thread watek = new Thread(() =>
             {
@@ -45,20 +45,14 @@ namespace Data
                 {
                     move();
                     updateSpeedVector();
-                    int sleepTime = (int)(15.0 / speedVector);
-                    sleepTime++;
+                    int sleepTime = (int)(20 / speedVector);
+                    sleepTime = Math.Max(sleepTime, 0);
                     Thread.Sleep(sleepTime);
                 }
             });
             watek.Start();
         }
 
-
-        public double SpeedVector()
-        {
-             return this.speedVector; 
-
-        }
 
         public void updateSpeedVector()
         {
@@ -70,37 +64,40 @@ namespace Data
             this.StopThreads = true;
         }
 
-        //zmienić OnPropertyChanged();
         public double x
         {
-            get { return this.X; }
+            get { return X; }
             set
             {
-                this.X = value;
-                OnPropertyChanged("x");
+                X = value;
             }
-
         }
 
         public double y
         {
-            get { return this.Y; }
+            get { return Y; }
             set
             {
-                this.Y = value;
-                OnPropertyChanged("y");
+                Y = value;
             }
         }
 
         private void setXY(double x, double y)
         {
-            this.x = x;
-            this.y = y;
+            object lockObject = new object();
+            lock (lockObject)
+            {
+                this.x = x;
+                this.y = y;
+            
+            OnPropertyChanged("x");
+            OnPropertyChanged("y");
+            }
         }
 
         private void move()
         {
-            setXY(this.x + this.XSpeed, this.y + this.YSpeed);
+            setXY(x + XSpeed, y + YSpeed);
         }
 
         public double radius

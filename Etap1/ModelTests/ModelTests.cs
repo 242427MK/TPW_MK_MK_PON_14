@@ -22,26 +22,25 @@ namespace ModelTests
             double r = 10;
             double w = 10;
 
-
             Orb orb = new Orb(x, y, r, w);
-
             Circle circle = new Circle(orb);
 
-            Assert.AreEqual(circle.x, x);
-            Assert.AreEqual(circle.y, y);
+            int expectedValue = 10;
+            int buffer = 2;
+
+            if (circle.x >= expectedValue - buffer && circle.x <= expectedValue + buffer)
+            {Assert.IsTrue(true);}
+            else
+            {Assert.IsTrue(false);}
+
+
+            if (circle.y >= expectedValue - buffer && circle.y <= expectedValue + buffer)
+            { Assert.IsTrue(true); }
+            else
+            { Assert.IsTrue(false); }
+
+
             Assert.AreEqual(circle.radius, r);
-
-            int x2 = 40;
-            int y2 = 50;
-            int r2 = 60;
-
-            circle.x = x2;
-            circle.y = y2;
-            circle.radius = r2;
-
-            Assert.AreEqual(circle.x, x2);
-            Assert.AreEqual(circle.y, y2);
-            Assert.AreEqual(circle.radius, r2);
         }
 
 

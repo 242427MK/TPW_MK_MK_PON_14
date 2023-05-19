@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using Data;
 
 namespace Logic
@@ -56,14 +58,19 @@ namespace Logic
 
             private bool IsOverlapping(Orb newOrb)
             {
-                foreach (Orb orb in orbs)
+                object lockObject = new object();
+
+                lock (lockObject)
                 {
-                    if (Math.Sqrt(Math.Pow(newOrb.x - orb.x, 2) + Math.Pow(newOrb.y - orb.y, 2)) < newOrb.radius + orb.radius)
+                    foreach (Orb orb in orbs)
                     {
-                        return true;
+                        if (Math.Sqrt(Math.Pow(newOrb.x - orb.x, 2) + Math.Pow(newOrb.y - orb.y, 2)) < newOrb.radius + orb.radius)
+                        {
+                            return true;
+                        }
                     }
+                    return false;
                 }
-                return false;
             }
 
 
@@ -84,7 +91,6 @@ namespace Logic
                     }
                     orbs.Add(newOrb);  
                 }
-
             }
 
             
@@ -95,6 +101,7 @@ namespace Logic
                 StopThreads = false;
 
                 object lockObject = new object();
+                Stopwatch stopwatch = new Stopwatch();
 
                 foreach (Orb orb in orbs)
                 {
@@ -102,11 +109,16 @@ namespace Logic
                     {
                         while (!StopThreads)
                         {
+                            stopwatch.Restart();
+                            stopwatch.Start();  
                             lock (lockObject)
                             {
-                                CheckCollision(orb);
+                                AreaCollision(orb);
+                                OrbCollision(orb);
                             }
-                            int sleepTime = (int)(15.0 / orb.SpeedVector());
+                            stopwatch.Stop();
+                           
+                            int sleepTime = (int)(stopwatch.Elapsed.TotalMilliseconds);
                             Thread.Sleep(sleepTime);
                         }
                     });
@@ -137,6 +149,7 @@ namespace Logic
                     orb.y = DataApi.upBorder();
                 }
             }
+
             private void OrbCollision(Orb orb)
             {
                 foreach (Orb o in orbs)
@@ -159,12 +172,6 @@ namespace Logic
                         o.YSpeed = newSpeed;
                     }
                 }
-            }
-
-            private void CheckCollision(Orb orb)
-            {
-                AreaCollision(orb);
-                OrbCollision(orb);
             }
 
             public override void Stopthreads()

@@ -76,7 +76,7 @@ namespace ViewModel
                     circle.PropertyChanged += propertyChanged;
                 }
                 logicAPI.CreateThreads();
-        }
+             }
 
             public void Stop()
             {
