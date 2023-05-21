@@ -56,7 +56,7 @@ namespace Data
 
         public void updateSpeedVector()
         {
-          this.speedVector  = Math.Sqrt((this.XSpeed * this.XSpeed) + (this.YSpeed * this.YSpeed));
+          speedVector  = Math.Sqrt((this.XSpeed * this.XSpeed) + (this.YSpeed * this.YSpeed));
         }
 
         public void stop()
@@ -106,7 +106,7 @@ namespace Data
             set
             {
                 Radius = value;
-                OnPropertyChanged(nameof(radius));
+                OnPropertyChanged("radius");
             }
         }
 

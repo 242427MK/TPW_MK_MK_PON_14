@@ -128,25 +128,31 @@ namespace Logic
 
             private void AreaCollision(Orb orb)
             {
-                if ((orb.x + orb.radius) >= DataApi.rightBorder())
+                object lockObject = new object();
+                lock (lockObject)
                 {
-                    orb.XSpeed = -orb.XSpeed;
-                    orb.x = DataApi.rightBorder() - orb.radius;
-                }
-                if (orb.x <= DataApi.leftBorder())
-                {
-                    orb.XSpeed = -orb.XSpeed;
-                    orb.x = DataApi.leftBorder();
-                }
-                if ((orb.y + orb.radius) >= DataApi.downBorder())
-                {
-                    orb.YSpeed = -orb.YSpeed;
-                    orb.y = DataApi.downBorder() - orb.radius;
-                }
-                if (orb.y <= DataApi.upBorder())
-                {
-                    orb.YSpeed = -orb.YSpeed;
-                    orb.y = DataApi.upBorder();
+                    {
+                        if ((orb.x + orb.radius) >= DataApi.rightBorder())
+                        {
+                            orb.XSpeed = -orb.XSpeed;
+                            orb.x = DataApi.rightBorder() - orb.radius;
+                        }
+                        if (orb.x <= DataApi.leftBorder())
+                        {
+                            orb.XSpeed = -orb.XSpeed;
+                            orb.x = DataApi.leftBorder();
+                        }
+                        if ((orb.y + orb.radius) >= DataApi.downBorder())
+                        {
+                            orb.YSpeed = -orb.YSpeed;
+                            orb.y = DataApi.downBorder() - orb.radius;
+                        }
+                        if (orb.y <= DataApi.upBorder())
+                        {
+                            orb.YSpeed = -orb.YSpeed;
+                            orb.y = DataApi.upBorder();
+                        }
+                    }
                 }
             }
 
@@ -158,8 +164,14 @@ namespace Logic
                     {
                         continue;
                     }
-                    double xDiff = o.x - orb.x;
-                    double yDiff = o.y - orb.y;
+                    object lockObject = new object();
+                    double xDiff;
+                    double yDiff;
+                    lock (lockObject)
+                    {
+                         xDiff = o.x - orb.x;
+                         yDiff = o.y - orb.y;
+                    }
                     double distance = Math.Sqrt((xDiff * xDiff) + (yDiff * yDiff))*2;
                     if (distance <= (orb.radius + o.radius))
                     {
