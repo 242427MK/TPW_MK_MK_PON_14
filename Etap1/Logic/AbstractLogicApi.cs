@@ -37,6 +37,7 @@ namespace Logic
         {
 
             private List<Orb> orbs = new List<Orb>();
+            private Logger logger;
 
             public override List<Orb> GetOrbList()
             {
@@ -45,11 +46,13 @@ namespace Logic
             internal LogicApi()
             {
                 DataApi = AbstractDataApi.instance;
+                logger = new Logger(orbs);
             }
 
             internal LogicApi(AbstractDataApi dataApi)
             {
                 this.DataApi = dataApi;
+                logger = new Logger(orbs);
             }
 
             AbstractDataApi DataApi;
@@ -77,6 +80,7 @@ namespace Logic
             public override void GenerateRandomBalls(int num)
             {
                 Random rand = new Random();
+                //logger.Stop();
                 orbs.Clear();
                 for (int i = 0; i < num; i++)
                 {
@@ -91,6 +95,7 @@ namespace Logic
                     }
                     orbs.Add(newOrb);  
                 }
+                //logger = new Logger(orbs);
             }
 
             
@@ -102,6 +107,8 @@ namespace Logic
 
                 object lockObject = new object();
                 Stopwatch stopwatch = new Stopwatch();
+
+                logger.Stop();
 
                 foreach (Orb orb in orbs)
                 {
@@ -124,6 +131,7 @@ namespace Logic
                     });
                     watek.Start();
                 }
+                logger = new Logger(orbs);
             }
 
             private void AreaCollision(Orb orb)
@@ -135,7 +143,7 @@ namespace Logic
                         if ((orb.x + orb.radius) >= DataApi.rightBorder())
                         {
                             orb.XSpeed = -orb.XSpeed;
-                            orb.x = (float)(DataApi.rightBorder() - orb.radius);
+                            orb.x = ((float)(DataApi.rightBorder() - orb.radius));
                         }
                         if (orb.x <= DataApi.leftBorder())
                         {
@@ -145,7 +153,7 @@ namespace Logic
                         if ((orb.y + orb.radius) >= DataApi.downBorder())
                         {
                             orb.YSpeed = -orb.YSpeed;
-                            orb.y = (float)(DataApi.downBorder() - orb.radius);
+                            orb.y = ((float)(DataApi.downBorder() - orb.radius));
                         }
                         if (orb.y <= DataApi.upBorder())
                         {
@@ -193,6 +201,7 @@ namespace Logic
                 {
                     orb.stop();
                 }
+                logger.Stop();
             }
         }
     }

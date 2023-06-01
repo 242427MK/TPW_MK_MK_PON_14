@@ -13,16 +13,11 @@ namespace Model
         public Circle(Orb orb)
         {
             orb.PropertyChanged += propertyChanged;
-            this.x = orb.x;
-            this.y = orb.y;
+            _vector = new Vector2(orb.x, orb.y);
             this.radius = orb.radius;
         }
 
         private Vector2 _vector;
-
-       // private double X;
- 
-       // private double Y;
         private double Radius;
         private double Weight;
 

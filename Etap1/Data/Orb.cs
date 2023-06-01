@@ -13,12 +13,9 @@ namespace Data
 {
     public class Orb : INotifyPropertyChanged
     {
-       // private double X;
-       // private double Y;
         private double Radius;
         private double Weight;
         private double[] speed = new double[2];
-        private double speedVector;
 
         private bool StopThreads = false;
 
@@ -27,7 +24,6 @@ namespace Data
         public Orb(double x, double y, double radius, double weight)
         {
             _vector = new Vector2((float)x, (float)y);
-           // setXY(x, y);
             Radius = radius;
             Weight = weight;
 
@@ -42,20 +38,23 @@ namespace Data
             speed[0] = xSpeed;
             speed[1] = ySpeed;
 
-            speedVector = Math.Sqrt((XSpeed * XSpeed) + (YSpeed * YSpeed));
+            Stopwatch stopwatch = new Stopwatch();
 
-           
+            Thread watek = new Thread(() =>
+            {
+                while (!StopThreads)
+                {
+                    stopwatch.Restart();
+                    stopwatch.Start();
                     Move();
-                    updateSpeedVector();
-                    int sleepTime = (int)(20 / speedVector);
-                    sleepTime = Math.Max(sleepTime, 0);
-                    
-        }
+                    stopwatch.Stop();
 
+                    int sleepTime = (int)(stopwatch.Elapsed.TotalMilliseconds);
+                    Thread.Sleep(sleepTime);
+                }
+            });
+            watek.Start();
 
-        public void updateSpeedVector()
-        {
-          speedVector  = Math.Sqrt((this.XSpeed * this.XSpeed) + (this.YSpeed * this.YSpeed));
         }
 
         public void stop()
@@ -83,34 +82,10 @@ namespace Data
             }
         }
 
-        /* private void setXY(double x, double y)
-         {
-             object lockObject = new object();
-             lock (lockObject)
-             {
-                 this.x = x;
-                 this.y = y;
-
-             OnPropertyChanged("x");
-             OnPropertyChanged("y");
-             }
-         }*/
-
-        private async Task Move()
+        private void Move()
         {
-            Stopwatch stopwatch = new Stopwatch();
-
-            while (!StopThreads)
-            {
-                stopwatch.Restart();
-                stopwatch.Start();
                 _vector.X += (float)XSpeed;
                 _vector.Y += (float)YSpeed;
-                OnPropertyChanged("Vector");
-                stopwatch.Stop();
-                int sleepTime = (int)(stopwatch.Elapsed.TotalMilliseconds);
-                await Task.Delay(sleepTime);
-            }
         }
 
         public double radius

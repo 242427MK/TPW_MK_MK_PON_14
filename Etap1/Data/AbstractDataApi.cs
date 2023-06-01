@@ -31,6 +31,7 @@ namespace Data
         internal sealed class DataApi : AbstractDataApi
         {
 
+            public Logger loger;
 
             private int Up_border = 0;
             private int Down_border = 600;

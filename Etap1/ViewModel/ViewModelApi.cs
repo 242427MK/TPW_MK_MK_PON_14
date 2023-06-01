@@ -25,7 +25,7 @@ namespace ViewModel
 
 
         AbstractModelApi modelAPI = AbstractModelApi.instance;
-            AbstractLogicApi logicAPI = AbstractLogicApi.instance;
+        AbstractLogicApi logicAPI = AbstractLogicApi.instance;
 
             public ViewModelApi()
             {
