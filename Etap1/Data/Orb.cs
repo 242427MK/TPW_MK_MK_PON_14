@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +13,8 @@ namespace Data
 {
     public class Orb : INotifyPropertyChanged
     {
-        private double X;
-        private double Y;
+       // private double X;
+       // private double Y;
         private double Radius;
         private double Weight;
         private double[] speed = new double[2];
@@ -20,9 +22,12 @@ namespace Data
 
         private bool StopThreads = false;
 
+        private Vector2 _vector;
+
         public Orb(double x, double y, double radius, double weight)
         {
-            setXY(x, y);
+            _vector = new Vector2((float)x, (float)y);
+           // setXY(x, y);
             Radius = radius;
             Weight = weight;
 
@@ -39,18 +44,12 @@ namespace Data
 
             speedVector = Math.Sqrt((XSpeed * XSpeed) + (YSpeed * YSpeed));
 
-            Thread watek = new Thread(() =>
-            {
-                while (!StopThreads)
-                {
-                    move();
+           
+                    Move();
                     updateSpeedVector();
                     int sleepTime = (int)(20 / speedVector);
                     sleepTime = Math.Max(sleepTime, 0);
-                    Thread.Sleep(sleepTime);
-                }
-            });
-            watek.Start();
+                    
         }
 
 
@@ -64,40 +63,54 @@ namespace Data
             this.StopThreads = true;
         }
 
-        public double x
+        public float x
         {
-            get { return X; }
+            get { return _vector.X; }
             set
             {
-                X = value;
+                _vector.X = value;
+                OnPropertyChanged("x");
             }
         }
 
-        public double y
+        public float y
         {
-            get { return Y; }
+            get { return _vector.Y; }
             set
             {
-                Y = value;
+                _vector.Y = value;
+                OnPropertyChanged("y");
             }
         }
 
-        private void setXY(double x, double y)
+        /* private void setXY(double x, double y)
+         {
+             object lockObject = new object();
+             lock (lockObject)
+             {
+                 this.x = x;
+                 this.y = y;
+
+             OnPropertyChanged("x");
+             OnPropertyChanged("y");
+             }
+         }*/
+
+        private async Task Move()
         {
-            object lockObject = new object();
-            lock (lockObject)
+            Stopwatch stopwatch = new Stopwatch();
+
+            while (!StopThreads)
             {
-                this.x = x;
-                this.y = y;
-            
-            OnPropertyChanged("x");
-            OnPropertyChanged("y");
+                stopwatch.Restart();
+                stopwatch.Start();
+                _vector.X += (float)XSpeed;
+                _vector.Y += (float)YSpeed;
+                OnPropertyChanged("Vector");
+                stopwatch.Stop();
+                int sleepTime = (int)(stopwatch.Elapsed.TotalMilliseconds);
+                await Task.Delay(sleepTime);
             }
-        }
-
-        private void move()
-        {
-            setXY(x + XSpeed, y + YSpeed);
         }
 
         public double radius
@@ -127,7 +140,6 @@ namespace Data
             get { return Weight; }
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
@@ -136,4 +148,3 @@ namespace Data
 
     }
 }
-

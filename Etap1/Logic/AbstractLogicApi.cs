@@ -135,7 +135,7 @@ namespace Logic
                         if ((orb.x + orb.radius) >= DataApi.rightBorder())
                         {
                             orb.XSpeed = -orb.XSpeed;
-                            orb.x = DataApi.rightBorder() - orb.radius;
+                            orb.x = (float)(DataApi.rightBorder() - orb.radius);
                         }
                         if (orb.x <= DataApi.leftBorder())
                         {
@@ -145,7 +145,7 @@ namespace Logic
                         if ((orb.y + orb.radius) >= DataApi.downBorder())
                         {
                             orb.YSpeed = -orb.YSpeed;
-                            orb.y = DataApi.downBorder() - orb.radius;
+                            orb.y = (float)(DataApi.downBorder() - orb.radius);
                         }
                         if (orb.y <= DataApi.upBorder())
                         {

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.ComponentModel;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using Data;
 
@@ -8,6 +9,7 @@ namespace Model
 {
     public class Circle : INotifyPropertyChanged
     {
+
         public Circle(Orb orb)
         {
             orb.PropertyChanged += propertyChanged;
@@ -16,26 +18,30 @@ namespace Model
             this.radius = orb.radius;
         }
 
-        private double X;
-        private double Y;
+        private Vector2 _vector;
+
+       // private double X;
+ 
+       // private double Y;
         private double Radius;
         private double Weight;
 
-        public double x
+        public float x
         {
-            get { return X; }
+            get { return _vector.X; }
             set
             {
-                X = value;
+                _vector.X = value;
                 OnPropertyChanged("x");
             }
         }
-        public double y
+
+        public float y
         {
-            get { return Y; }
+            get { return _vector.Y; }
             set
             {
-                Y = value;
+                _vector.Y = value;
                 OnPropertyChanged("y");
             }
         }
