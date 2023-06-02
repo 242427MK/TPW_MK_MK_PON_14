@@ -80,7 +80,7 @@ namespace Logic
             public override void GenerateRandomBalls(int num)
             {
                 Random rand = new Random();
-                //logger.Stop();
+                logger.Stop();
                 orbs.Clear();
                 for (int i = 0; i < num; i++)
                 {
@@ -95,7 +95,7 @@ namespace Logic
                     }
                     orbs.Add(newOrb);  
                 }
-                //logger = new Logger(orbs);
+                logger = new Logger(orbs);
             }
 
             
@@ -107,8 +107,6 @@ namespace Logic
 
                 object lockObject = new object();
                 Stopwatch stopwatch = new Stopwatch();
-
-                logger.Stop();
 
                 foreach (Orb orb in orbs)
                 {
@@ -131,7 +129,7 @@ namespace Logic
                     });
                     watek.Start();
                 }
-                logger = new Logger(orbs);
+
             }
 
             private void AreaCollision(Orb orb)
@@ -183,7 +181,7 @@ namespace Logic
                     double distance = Math.Sqrt((xDiff * xDiff) + (yDiff * yDiff))*2;
                     if (distance <= (orb.radius + o.radius))
                     {
-                        double newSpeed = ((o.XSpeed * (o.weight - orb.weight) + (orb.weight * orb.XSpeed * 2)) / (o.weight + orb.weight));
+                        float newSpeed = ((o.XSpeed * (o.weight - orb.weight) + (orb.weight * orb.XSpeed * 2)) / (o.weight + orb.weight));
                         orb.XSpeed = ((orb.XSpeed * (orb.weight - o.weight) + (o.weight * o.XSpeed * 2)) / (o.weight + orb.weight));
                         o.XSpeed = newSpeed;
 

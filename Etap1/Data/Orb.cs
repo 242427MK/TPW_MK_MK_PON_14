@@ -13,30 +13,30 @@ namespace Data
 {
     public class Orb : INotifyPropertyChanged
     {
-        private double Radius;
-        private double Weight;
-        private double[] speed = new double[2];
-
+        private float Radius;
+        private float Weight;
+        private Vector2 SpeedVector;
+        private Vector2 Position;
         private bool StopThreads = false;
+        private float SpeedVectorLength;
+        
 
-        private Vector2 _vector;
-
-        public Orb(double x, double y, double radius, double weight)
+        public Orb(float x, float y, float radius, float weight)
         {
-            _vector = new Vector2((float)x, (float)y);
+            Position = new Vector2(x, y);
             Radius = radius;
             Weight = weight;
 
             Random random = new Random();
-            double xSpeed = 0;
+            float xSpeed = 0;
             do
             {
-                xSpeed = random.NextDouble() * 0.99;
+                xSpeed = (float)(random.NextDouble() * 0.99);
             } while (xSpeed == 0);
-            double ySpeed = Math.Sqrt(4 - (xSpeed * xSpeed));
+            float ySpeed = (float)Math.Sqrt(4 - (xSpeed * xSpeed));
             ySpeed = (random.Next(-1, 1) < 0) ? ySpeed : -ySpeed;
-            speed[0] = xSpeed;
-            speed[1] = ySpeed;
+            SpeedVector = new Vector2(xSpeed, ySpeed);
+            SpeedVectorLength = (float)Math.Sqrt(speedVector.X * speedVector.X + speedVector.Y * speedVector.Y); ;
 
             Stopwatch stopwatch = new Stopwatch();
 
@@ -48,8 +48,10 @@ namespace Data
                     stopwatch.Start();
                     Move();
                     stopwatch.Stop();
+                    CalculateSpeedVectorLength();
 
-                    int sleepTime = (int)(stopwatch.Elapsed.TotalMilliseconds);
+                    int sleepTime = (int)(stopwatch.Elapsed.TotalMilliseconds + SpeedVectorLength);
+                    sleepTime = Math.Max(sleepTime, 0)+1;
                     Thread.Sleep(sleepTime);
                 }
             });
@@ -62,61 +64,87 @@ namespace Data
             this.StopThreads = true;
         }
 
-        public float x
-        {
-            get { return _vector.X; }
-            set
-            {
-                _vector.X = value;
-                OnPropertyChanged("x");
-            }
-        }
-
-        public float y
-        {
-            get { return _vector.Y; }
-            set
-            {
-                _vector.Y = value;
-                OnPropertyChanged("y");
-            }
-        }
-
         private void Move()
         {
-                _vector.X += (float)XSpeed;
-                _vector.Y += (float)YSpeed;
+            Position += speedVector;
+            OnPropertyChanged();
         }
 
-        public double radius
+        public float radius
         {
             get { return Radius; }
             set
             {
                 Radius = value;
-                OnPropertyChanged("radius");
             }
         }
 
-        public double XSpeed
+        public float x
         {
-            get { return speed[0]; }
-            set { speed[0] = value; }
+            get { return Position.X; }
+            set
+            {
+                Position.X = value;
+            }
         }
 
-        public double YSpeed
+        public float y
         {
-            get { return speed[1]; }
-            set { speed[1] = value; }
+            get { return Position.Y; }
+            set
+            {
+                Position.Y = value;
+            }
         }
 
-        public double weight
+        public Vector2 position
+        {
+            get { return Position; }
+            set
+            {
+                Position = value;
+            }
+        }
+
+        public float XSpeed
+        {
+            get { return SpeedVector.X; }
+            set
+            {
+                SpeedVector.X = value;
+            }
+        }
+        public float YSpeed
+        {
+            get { return SpeedVector.Y; }
+            set
+            {
+                SpeedVector.Y = value;
+            }
+        }
+
+        public Vector2 speedVector
+        {
+            get { return SpeedVector; }
+            set
+            {
+                SpeedVector = value;
+            }
+        }
+
+        private void CalculateSpeedVectorLength()
+        {
+            float length = (float)Math.Sqrt(speedVector.X * speedVector.X + speedVector.Y * speedVector.Y);
+            SpeedVectorLength = length;
+        }
+
+        public float weight
         {
             get { return Weight; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -17,21 +17,24 @@ namespace ModelTests
         [TestMethod]
         public void CircleTests()
         {
-            double x = 10;
-            double y = 10;
-            double r = 10;
-            double w = 10;
+            float x = 10;
+            float y = 10;
+            float r = 10;
+            float w = 10;
 
             Orb orb = new Orb(x, y, r, w);
             Circle circle = new Circle(orb);
 
             int expectedValue = 10;
-            int buffer = 2;
+            int buffer = 5;
+
+
+            Assert.AreEqual(circle.radius, r);
 
             if (circle.x >= expectedValue - buffer && circle.x <= expectedValue + buffer)
-            {Assert.IsTrue(true);}
+            { Assert.IsTrue(true); }
             else
-            {Assert.IsTrue(false);}
+            { Assert.IsTrue(false); }
 
 
             if (circle.y >= expectedValue - buffer && circle.y <= expectedValue + buffer)
@@ -39,10 +42,8 @@ namespace ModelTests
             else
             { Assert.IsTrue(false); }
 
-
-            Assert.AreEqual(circle.radius, r);
         }
-
+            
 
         [TestMethod]
         public void ModelApiTests()

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -13,56 +12,51 @@ namespace Model
         public Circle(Orb orb)
         {
             orb.PropertyChanged += propertyChanged;
-            _vector = new Vector2(orb.x, orb.y);
+            position = new Vector2(orb.x, orb.y);
             this.radius = orb.radius;
         }
 
-        private Vector2 _vector;
-        private double Radius;
-        private double Weight;
+        private Vector2 position;
+        private float Radius;
 
         public float x
         {
-            get { return _vector.X; }
+            get { return position.X; }
             set
             {
-                _vector.X = value;
+                position.X = value;
                 OnPropertyChanged("x");
             }
         }
 
         public float y
         {
-            get { return _vector.Y; }
+            get { return position.Y; }
             set
             {
-                _vector.Y = value;
+                position.Y = value;
                 OnPropertyChanged("y");
             }
         }
 
-        public double radius
+        public float radius
         {
             get { return Radius; }
             set
             {
                 Radius = value;
-                OnPropertyChanged("radius");
             }
         }
 
         private void propertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Orb orb = (Orb)sender;
-            if (e.PropertyName == "x")
+            if (e.PropertyName == "Move")
             {
-                this.x = orb.x;
+                this.x = orb.position.X;
+                this.y = orb.position.Y;
             }
-            if (e.PropertyName == "y")
-            {
-                this.y = orb.y;
-            }
-            if ( e.PropertyName == "radius")
+            if (e.PropertyName == "radius")
             {
                 this.Radius = orb.radius;
             }
