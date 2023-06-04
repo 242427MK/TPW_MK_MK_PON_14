@@ -19,7 +19,13 @@ namespace Data
         private Vector2 Position;
         private bool StopThreads = false;
         private float SpeedVectorLength;
-        
+
+
+        public Orb()
+        {
+           
+        }
+
 
         public Orb(float x, float y, float radius, float weight)
         {
